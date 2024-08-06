@@ -280,6 +280,7 @@ def get_element_object(expression):
                 return element_object
 def get_type_of_element(element_object):
     return element_object.type
+    
 def electronic_configuration(element):
         electrons_number = element.Z
         
@@ -478,6 +479,7 @@ def electronic_configuration(element):
             else:
                 return configuration + " Something happened with your electrons"
         return configuration
+    
 def check_configuration(element):
     periodic_group =  element.group
     configuration = electronic_configuration(element)
@@ -612,7 +614,6 @@ def dict_formula_with_charge(formula):#x(n+)
     
     dict_formula = {}
     
-    
     stoichiometric_coefficient = 1
     for i in range (len(formula)):
         abbrev = ""
@@ -632,8 +633,7 @@ def dict_formula_with_charge(formula):#x(n+)
                     
                     if i + 3 < len(formula) and formula[i+3] == "(":#0123
                         x = 1
-                        
-                        
+                          
                 
                 elif i + 2 < len(formula) and formula[i+2] == "(": #013
                     nsatoms.append(natoms) 
@@ -667,16 +667,7 @@ def dict_formula_with_charge(formula):#x(n+)
                             charge = int(formula[i+3])
                         
                         elif i + 4 < len(formula) and formula[i+4] == "-":
-                            charge = abs(int(formula[i+3]))
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                    
+                            charge = abs(int(formula[i+3]))      
                 
             elif i + 1  < len(formula) and formula[i+1] in string.ascii_uppercase:#00 UU
                 abbrev = formula[i]
@@ -688,11 +679,7 @@ def dict_formula_with_charge(formula):#x(n+)
                 abbrev = formula[i]
                 abbrevs.append(abbrev)
                 natoms = 1
-                nsatoms.append(natoms) 
-                
-
-                
-                
+                nsatoms.append(natoms)    
                 
             elif i + 1  == len(formula):#0 U
                 abbrev = formula[i]
@@ -702,11 +689,6 @@ def dict_formula_with_charge(formula):#x(n+)
                 
             else:
                 return "Something happened. Check your code "
-
-            
-            
-            
-            
             
         elif formula [i] in string_numbers:
             if formula[i + 1] in string_numbers:
@@ -714,12 +696,6 @@ def dict_formula_with_charge(formula):#x(n+)
             
             else:
                 stoichiometric_coefficient = formula [i] 
-        
-        
-    
-    
-    
-    
     
     
     for abbr,natom in zip(abbrevs,nsatoms): 
@@ -737,8 +713,6 @@ def molecular_dict_formules(formula): #x(xxn)n
         dict_formula[abbr] = natom
 
 #It should to have a common function called dict_formula that encompass all dict formules 
-
-
 
 
 
