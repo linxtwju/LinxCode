@@ -9,28 +9,28 @@ from math import sqrt
 #It can be programmed and can be visualized too.
 
 
-def list_to_square(list):
-    list_square = []
+def sample_to_square(sample):
+    sample_squared = []
     
-    for element in list: 
-        list_square.append(element ** 2)
+    for element in sample: 
+        sample_squared.append(element ** 2)
         
-    return list_square
+    return sample_squared
 
-def list_per_list(list1, list2): 
-    listxlist = []
+def sample_per_sample(sample1, sample2): 
+    samplexsample = []
     
-    if len(list1) != len(list2): 
+    if len(sample1) != len(sample2): 
         return "The lists have not same length"
     
-    for n in range(len(list1)): 
-        num = list1[n] * list2[n]
-        listxlist.append(num)
+    for n in range(len(sample1)): 
+        num = sample1[n] * sample2[n]
+        samplexsample.append(num)
         
-    return listxlist
+    return samplexsample
 
-def avg(list): 
-    return sum(list)/len(list) 
+def avg(sample): 
+    return sum(sample)/len(sample) 
 
 def covariance_squared(N, sum_var_squared, avg): 
     return 1/N * sum_var_squared - (avg**2)  
@@ -47,9 +47,9 @@ def main():
     y = [15,17,18,20,23,25] #habitacions totals
 
     
-    x_sq = list_to_square(x)
-    y_sq = list_to_square(y) 
-    x_per_y = list_per_list (x,y) 
+    x_sq = sample_to_square(x)
+    y_sq = sample_to_square(y) 
+    x_per_y = sample_per_sample(x,y) 
 
     sum(x_per_y)
 
