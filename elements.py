@@ -278,8 +278,6 @@ def get_element_object(expression):
             if expression == symbol.X:
                 element_object = symbol
                 return element_object
-def get_type_of_element(element_object):
-    return element_object.type
     
 def electronic_configuration(element):
         electrons_number = element.Z
@@ -1053,7 +1051,7 @@ def name_formula_binary (formula):
         is_a_peroxide = False
     
     element_1 = get_element_object(partial_formula_1) 
-    type_of_element_1 = get_type_of_element (element_1)
+    type_of_element_1 = element_1.type
     
     
     if partial_formula_2 == "O" and atoms_e2 == 2 and type_of_element_1 == "Alkaline metals" or type_of_element_1 == "Alkaline earth metals":
