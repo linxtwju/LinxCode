@@ -1,0 +1,122 @@
+def is_openparenthesis (char):
+    return char == "("
+
+def is_closeparenthesis(char): 
+    return char == ")"
+
+def is_plus(char): 
+    return char == "+"
+
+def is_minus(char):
+    return char == "-"
+
+
+
+def extract_formula (str_formula):
+    
+    
+    
+    element = ""
+    element_closed = False
+    open_parenthesis = False
+    
+    number_of_atoms_element = 1
+    charge_of_the_molecule = 0
+    stoichiometric_coefficient = 1
+    
+    
+    
+    
+    for ch in str_formula :
+        
+        number = 0
+        
+        if ch.isupper():
+            element_closed = False
+            element = ch.isupper
+            
+            
+            
+        if ch.islower(): 
+            element.append(ch)
+            element_closed = True
+            
+            
+        if ch.isdigit():
+            element_closed = True
+            number = int(ch)
+            
+        
+        if is_openparenthesis(ch):
+            element_closed = True
+            open_parenthesis = True
+            
+        
+        if is_closeparenthesis (ch):
+            element_closed = True
+            open_parenthesis = False
+        
+        if is_plus(ch):
+            if number == 0 :
+                charge_of_the_molecule = 1
+            else: 
+                charge_of_the_molecule =  number
+                number = 0
+            
+            
+        if is_minus(ch):
+            if number == 0 :
+                charge_of_the_molecule = -1
+            else: 
+                charge_of_the_molecule = abs(number)
+                number = 0
+            
+            
+                
+            
+        if element_closed: 
+            element = ""    
+        
+            
+            
+            
+             
+            #if str_formula[i+1] < len(str_formula):
+                
+                #if str_formula[i + 1] in string.ascii_uppercase:
+                    #element = str_formula[i] + str_formula[i + 1]
+            
+            
+            
+            
+            
+            #else: 
+                #element = str_formula[i]
+                
+            
+                
+            
+        
+        
+        
+        
+        #If formula [i] is upper case
+        #element, check if next one is lower case, then is complete element, 
+        
+        # if next one is number, this is the quantity of atoms, else the amount of atoms is 1
+        # if next one is ( then, inside of () there is the charge, it must have + or -
+        
+        
+        #If formula [i] is number but is not inside () and not after element, then is a coefficient stoichiometric
+        
+        #If formula [i] "(" if is not after element is not a charge, then is a molecule in the formula that is multiplied. 
+        
+        
+dict_elements = {"Fe":2, "O":3} 
+
+charges = {"O2" : -2 }
+
+numbers_of_oxidation = {"Fe": 3, "O" : -2}
+       
+        
+        
