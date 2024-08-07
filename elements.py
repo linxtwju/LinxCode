@@ -546,308 +546,126 @@ def assign_name_to_symbol_of_element (abbrev):
     for symbol in elements_list:
         if abbrev == symbol.X:
             element_name = symbol.name
+            return element_name
+        else:
+            new_abbrev = input("Not element coincidence. Please introduce the abbreviation of the element again.")
+            assign_name_to_symbol_of_element(new_abbrev)
 
-def dict_formula_without_charge(formula): #dict_formula_without_charge
-    abbrevs = []
-    nsatoms = []
+
+#This function return the elements with the number of atoms that contains the formula and the charge
+def elements_in_formula(formula, atoms_or_charge=None): 
     
-    if "(" in formula and ")" in formula:
-        charge_or_molecules = True
-        return "This function doesn't make a dict with charge or with more than one molecules. Do it with dict_formula_with_charge or molecular_dict_formules"
-       
-    
-    
-    dict_formula = {}
-    
-    
+    elements_atoms = {} #Number of atoms of each element
+    charge = 0 #Charge of elements in formula 
+
+    is_molecule = False
+
+    abbrev_element = ""
     for i in range(len(formula)):
-        abbrev = ""
-        natoms = 0
-        if formula[i] in string.ascii_uppercase:
-            
-            if i + 1  < len(formula) and formula[i+1] in string.ascii_lowercase: #01, Ul
-                abbrev = formula[i] + formula[i+1]
-                abbrevs.append(abbrev)
-                natoms = 1
-                
-                if i + 2 < len(formula) and formula[i+2] in string_numbers: #012 Uln
-                    natoms = int(formula [i+2])
-                    
-                nsatoms.append(natoms)
-                
-            elif i + 1 < len(formula) and formula[i+1] in string_numbers: #02 Un
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = int(formula [i+1])
-                nsatoms.append(natoms)
-                
-            elif i + 1  < len(formula) and formula[i+1] in string.ascii_uppercase:#00 UU
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = 1
-                nsatoms.append(natoms)                    
-                
-            elif i + 1  == len(formula):#0 U
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = 1
-                nsatoms.append(natoms)
-                
-            else:
-                return "Something happened. Check your cod "
-
-                
-            
-    
-    
-    for abbr,natom in zip(abbrevs,nsatoms): 
-        dict_formula[abbr] = natom
-    
-    return dict_formula
-
-def dict_formula_with_charge(formula):#x(n+)
-    
-    abbrevs = []
-    nsatoms = []
-    
-    dict_formula = {}
-    
-    stoichiometric_coefficient = 1
-    for i in range (len(formula)):
-        abbrev = ""
-        natoms = 0
         
-        
+        num_of_atoms = 0
+
+        #There is only one if checking the uppercase because is when there is a new element
         if formula[i] in string.ascii_uppercase:
+            #This is checking if the next character is lower case e.g. "Fe" or "He" #0 is uppercase, 1 is lowercase, 2 is number
             if i + 1  < len(formula) and formula[i+1] in string.ascii_lowercase: #01, Ul
-                abbrev = formula[i] + formula[i+1]
-                abbrevs.append(abbrev)
-                natoms = 1
-                
-                if i + 2 < len(formula) and formula[i+2] in string_numbers: #012 Uln
-                    natoms = int(formula [i+2])
+                abbrev_element = formula[i] + formula[i+1]
+                num_of_atoms = 1
+
+                #This is checking if the next character is a number e.g. "Hg2"
+                if i + 2 < len(formula) and formula[i+2].isnumeric(): #012 Uln
+                    num_of_atoms = int(formula [i+2])
                     
-                    nsatoms.append(natoms)
-                    
-                    if i + 3 < len(formula) and formula[i+3] == "(":#0123
-                        x = 1
-                          
-                
-                elif i + 2 < len(formula) and formula[i+2] == "(": #013
-                    nsatoms.append(natoms) 
-                
-                if  i + 3 < len(formula) and formula[i+3] in string.ascii_uppercase:
-                    
-                    ind = formula.index(")")  
-                    number_of_molecules = 0
-                    partial_formula = ""
-                    for i in range (3, ind-1):
-                        partial_formula.append(formula[i])
-                        
-                    if formula[ind+1] in string_numbers:
-                        if formula[ind+2] in string_numbers:
-                            number_of_molecules = int(formula[ind+1] + formula[ind+2])
-                        else: 
-                            number_of_molecules = int(formula[ind+1])
-                        
-                        
-                    partial_dict = dict_formula_without_charge(partial_formula)
-                        
-    
-            elif i + 1 < len(formula) and formula[i+1] in string_numbers: #02 Un
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = int(formula [i+1])
-                nsatoms.append(natoms)
-                if i + 2 < len(formula) and formula[i+2] == "(":#023
-                    if i + 3 < len(formula) and formula[i+3] in string_numbers:
-                        if i + 4 < len(formula) and formula[i+4] == "+":
-                            charge = int(formula[i+3])
-                        
-                        elif i + 4 < len(formula) and formula[i+4] == "-":
-                            charge = abs(int(formula[i+3]))      
-                
-            elif i + 1  < len(formula) and formula[i+1] in string.ascii_uppercase:#00 UU
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = 1
-                nsatoms.append(natoms)                    
             
-            elif i + 1 < len(formula) and formula[i+1] == "(":
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = 1
-                nsatoms.append(natoms)    
+            #This is checking if the next character is a number e.g. "N2"    
+            elif i + 1 < len(formula) and formula[i+1].isnumeric(): #02 Un
+                abbrev_element = formula[i]
+                num_of_atoms = int(formula[i+1])
                 
-            elif i + 1  == len(formula):#0 U
-                abbrev = formula[i]
-                abbrevs.append(abbrev)
-                natoms = 1
-                nsatoms.append(natoms)
-                
+            #This is checking if the next character is a new element e.g. "HF"
+            elif i + 1  <= len(formula) or formula[i+1] in string.ascii_uppercase:#00 UU or 0 U
+                abbrev_element = formula[i]
+                num_of_atoms = 1
+                                   
+    
             else:
                 return "Something happened. Check your code "
-            
-        elif formula [i] in string_numbers:
-            if formula[i + 1] in string_numbers:
-                stoichiometric_coefficient = int(formula [i] + formula[i+1])
-            
-            else:
-                stoichiometric_coefficient = formula [i] 
-    
-    
-    for abbr,natom in zip(abbrevs,nsatoms): 
-        dict_formula[abbr] = natom
-   
-    
-def molecular_dict_formules(formula): #x(xxn)n
-    
-    abbrevs = []
-    nsatoms = []
-    
-    dict_formula = {}
-    
-    for abbr,natom in zip(abbrevs,nsatoms): 
-        dict_formula[abbr] = natom
 
-#It should to have a common function called dict_formula that encompass all dict formules 
+            elements_atoms[abbrev_element] = num_of_atoms
 
+        #Here we check if there is a parentesis then the formula has charge or is molecule
+        elif formula[i] == "(":
+    
+            if formula[i+1].isnumeric(): #x(n+)
+                if formula[i+2] == "+":
+                    charge = int(formula[i+1])
+                elif formula[i+2] == "-":
+                    charge = -(int(formula[i+1]))
+                
+            elif formula[i+1] == "+": #x(+)
+                charge = 1
+            elif formula[i+1] == "-": #x(-)
+                charge = -1
+
+            elif formula[i+1] in string.ascii_uppercase:#x(y)
+                is_molecule = True
+            else: 
+                return "Wrong formula"
+
+            pass
+                
+    if atoms_or_charge == "atoms":
+        return elements_atoms
+    elif atoms_or_charge == "charge":
+        return charge
+    else:
+        return elements_atoms, charge
 
 
 def classification_of_compounds(formula):
-    compounds_are = ["simple", "binary", "tertiary" ]
-    dict_formula = dict_formula_without_charge(formula)
+    compounds_are = ["simple", "binary", "tertiary", "quaternary", "complex"]
+    elements_of_formula_to_classify = elements_in_formula(formula, "atoms")
+    quantity_of_elements = len(elements_of_formula_to_classify) 
     
-    if dict!= type(dict_formula) :
-        return "Check the reading of your formula."
-        
-    
-    if len(dict_formula) == 1 : 
-        compound_is = "simple"
-    elif len(dict_formula) == 2:
-        compound_is = "binary"
-    elif len(dict_formula) == 3: 
-        compound_is = "tertiary"
-    elif len(dict_formula) == 4: 
-        compound_is = "quaternary"
-    elif len(dict_formula) >= 5: 
+    if quantity_of_elements >= 5:
         compound_is = "complex"
+    else:
+        compound_is = compounds_are[quantity_of_elements-1]
+    
     return compound_is
-
 
 def name_formula_simple (formula, is_anion = False, is_cation = False, return_with_charge = False):
     name = ""
-    prefix = ""
-    abbrev = ""
+    
+    prefixes = ["","mono", "di", "tri", "tetra", "penta", "hexa", "hepta", "octa", "nona", "deca"]
+
+    compound = classification_of_compounds(formula)
+    atoms_in_elements, charge = elements_in_formula(formula)
+
+    is_anion = charge < 0
+    is_cation = charge > 0
+    is_not_ion = charge == 0
+    
+    #names_of_elements = []
+
     element_name = ""
-    charge = ""
-    
-    is_cation = False
-    is_anion = False
-    is_not_ion = False
-    if "+" in formula: 
-        is_cation = True
-    elif "-" in formula: 
-        is_anion = True
-    else: 
-        is_not_ion = True
+    prefix = ""
 
-    length_formula = len(formula)
-    
-    
-#It's mesured the length of the abbrevation of the element inside the formula
-    length_abbrev = 0
-    
-#We see if there is more than one atom in the molecule and assign the abbrevation of the formula to a variable               
-    atoms_e = 0
-    if formula[0] in string.ascii_uppercase and length_formula >= 2:
-        
-        
-        
-        if formula [1] in string.ascii_lowercase:
-            abbrev = formula[0] + formula [1]
-            length_abbrev = 2
-            if length_formula == 2: 
-                atoms_e = 1
-                   
-            elif length_formula >= 4 and formula[2] in string_numbers and formula[3] in string_numbers:
-                atoms_e = int(formula[2] + formula[3])
-            
-            elif length_formula >= 3 and formula[2] in string_numbers:
-                atoms_e = int(formula [2])
-                
-            elif length_formula == 5 and ")" in formula: 
-                atoms_e = 1
-            elif length_formula == 6 and ")" in formula: 
-                atoms_e = 1
-            else: 
-                return "The substance is not simple,1"
-            
-        elif formula [1] in string_numbers:
-            abbrev = formula [0]
-            length_abbrev = 1
-            if length_formula >= 3 and formula[2] in string_numbers:
-                if formula [2] in string_numbers:
-                    atoms_e = int(formula[1] + formula[2])
-            
-            elif length_formula >= 2:
-                atoms_e = int(formula[1])
-            
-            else: 
-                return "The substance is not simple,2"
-            
-        elif formula [1] == "(":
-            abbrev = formula [0]
-            length_abbrev = 1
-            atoms_e = 1
-        
-    elif length_formula == 1: 
-        abbrev = formula[0]
-        length_abbrev = 1
-        atoms_e = 1
-    else:
-        return "Introduce valid formula with letters respecting upper and lower case and the number of atoms that contains(if is more than 1)"  
+    for element in compound:
+        element_name = assign_name_to_symbol_of_element(element)
+        number_of_atoms = compound[element]
+        prefix = prefixes[number_of_atoms]
+        #names_of_elements.append(element_name)
 
-#The prefix is assigned if the element has more than one atom      
-    prefix = prefixes[atoms_e]
+    electrons_balance = charge
 
-#The name of the element is assigned //                                                 function
-    for symbol in elements_list:
-        if abbrev == symbol.X:
-            element_name = symbol.name
-            
-            
     if is_cation: 
-        #It's established the charge of cation        
-        electrons_lost = 0 
-        if "+" == formula[-2]:
-            electrons_lost = 1
-            if formula [-3] in string_numbers:
-                electrons_lost = int(formula [-3])
-                if length_formula >= 4 and formula [-4] in string_numbers :
-                    electrons_lost = int(formula [-4] + formula [-3] )
+        charge_ = "(" + str(abs(electrons_balance)) + "+" + ")"
         
-        charge ="(" + str(electrons_lost) + "+" + ")"
-        if electrons_lost == 0:
-            charge = ""
-        if prefix == "mono":
-            prefix = ""
-        
-       
+
     if is_anion:
-        #It's established the charge of anion 
-        electrons_gained = 0
-        if "-" == formula[-2]:
-            electrons_gained = 1
-            if formula [-3] in string_numbers:
-                electrons_gained = int(formula [-3])
-                if formula [-4] in string_numbers:
-                    electrons_gained = int(formula [-4] + formula [-3] )
-        
-        #it lacks a if  with all roots of name elements or with the elements that changes some parts of its name 
-        # (hydride, nitride, carbide... )
-        #Also it can be added the name accepted (peroxide)
-        
+        charge_ ="(" + str(abs(electrons_balance)) + "-" + ")"
+
         suffix = "ide"
         if element_name == "Hydrogen" or element_name == "Nitrogen":
             element_name = element_name.replace("ogen", suffix) 
@@ -867,227 +685,13 @@ def name_formula_simple (formula, is_anion = False, is_cation = False, return_wi
             element_name == element_name.replace("y", suffix)
         else:
              element_name = element_name + suffix
-        
-        
-                    
-        
-        
-        charge = "(" + str(electrons_gained) + "-" + ")"
-        if electrons_gained == 0:
-            charge = ""
-        
-        
-        
-        if prefix == "mono":
-            prefix = ""
-            
-    if is_not_ion:
-        if prefix == "mono":
-            prefix = ""
-        
-    if return_with_charge:   
-        name = prefix + element_name.lower() + charge
-    else: 
-        name = prefix + element_name.lower()
-        
-        
-    return name.capitalize()
 
-def name_formula_binary (formula):
-    
-    #We get the dict of the elements in the formula and their respective number of atoms
-    #names = dict_formula_without_charge(formula)
-    
-    ckeck_binary = False
-    if classification_of_compounds(formula) == "binary":
-        ckeck_binary = True
-    else:
-        return "The formula doesn't belong to binary compounds."
+    name = prefix + element_name + charge_ 
 
-    
-    
-    
-    abbrev_1 = ""
-    abbrev_2 = ""
-    
-    length_abbrev_1 = 0
-    length_abbrev_2 = 0
-    
-    atoms_e1 = 0
-    atoms_e2 = 0
-    
-    length_of_formula = len(formula)
-    if length_of_formula < 2:
-        return "Too short"
-    elif length_of_formula > 6:
-        return "Too large"             
-
-#The abbrev of the two elements are obtained and the atoms of each one           
-    if formula[0] in string.ascii_uppercase:
-        if formula [1] in string.ascii_uppercase:
-            abbrev_1 = formula [0]
-            length_abbrev_1 = 1
-            atoms_e1 = 1
-            if length_of_formula == 2:
-                abbrev_2 = formula[1]
-                length_abbrev_2 = 1
-                atoms_e2 = 1
-            elif formula [2] in string_numbers and length_of_formula == 3:
-                abbrev_2 = formula [1]
-                length_abbrev_2 = 1
-                atoms_e2 = int(formula [2])
-            elif formula [2] in string_numbers and length_of_formula >= 4:
-                abbrev_2 = formula [1]
-                length_abbrev_2 = 1
-                atoms_e2 = int(formula [2] + formula [3])
-                
-            elif formula[2] in string.ascii_lowercase:
-                
-                if length_of_formula == 3:
-                    abbrev_2 = formula [1] + formula[2]
-                    length_abbrev_2 = 2
-                    atoms_e2 = 1
-                elif length_of_formula == 4:
-                    if formula [3] in string_numbers: 
-                        abbrev_2 = formula [1] + formula[2]
-                        length_abbrev_2 = 2
-                        atoms_e2 = int(formula [3])
-                elif length_of_formula >= 5:
-                        abbrev_2 = formula [1] + formula[2]
-                        length_abbrev_2 = 2
-                        atoms_e2 = int(formula [3] + formula [4])
-                
-        
-        elif formula [1] in string.ascii_lowercase:
-            abbrev_1 = formula[0] + formula [1]
-            length_abbrev_1 = 2
-            
-            if formula[2] in string_numbers:
-                atoms_e1 = int(formula[2])
-                
-                if length_of_formula == 4:
-                    abbrev_2 = formula [3]
-                    length_abbrev_2 = 1
-                    atoms_e2 = 1
-                elif formula[4] in string.ascii_lowercase:
-                    if length_of_formula == 5:
-                        abbrev_2 = formula [3] + formula [4]
-                        length_abbrev_2 = 2
-                        atoms_e2 = 1
-                    elif length_of_formula == 6 and formula[5] in string_numbers:
-                        abbrev_2 = formula [3] + formula [4]
-                        length_abbrev_2 = 2
-                        atoms_e2 = int(formula [5])
-                elif formula[4] in string_numbers and length_of_formula == 5:
-                    abbrev_2 = formula [3]
-                    length_abbrev_2 = 1
-                    atoms_e2 = int(formula[4])
-                                    
-            elif formula[2] in string.ascii_uppercase:
-                atoms_e1 = 1
-                if formula[3] in string.ascii_lowercase: 
-                    length_abbrev_2 = 2 
-                    if formula[4] in string_numbers: 
-                        atoms_e2 = int(formula[4])
-                elif formula[3] in string_numbers: 
-                    length_abbrev_2 = 1 
-                    atoms_e2 = int(formula[3])
-            else: 
-                return "Something was wrong with the formula"
-               
-        elif formula [1] in string_numbers:
-            atoms_e1 = int(formula[1])
-            abbrev_1 = formula [0]
-            length_abbrev_1 = 1
-            if length_of_formula == 3:
-                abbrev_2 = formula [2]
-                length_abbrev_2 = 1
-                atoms_e2 = 1
-            elif formula [3] in string_numbers and length_of_formula == 4:
-                abbrev_2 = formula [2]
-                length_abbrev_2 = 1
-                atoms_e2 = int(formula[3])
-            elif formula[3] in string.ascii_lowercase:
-                abbrev_2 = formula [2] + formula [3]
-                length_abbrev_2 = 2
-                
-                if length_of_formula == 4:
-                    atoms_e2 = 1
-                elif formula[4] in string_numbers:
-                    atoms_e2 = int(formula[4])
-                else:
-                    return "Something is wrong with the formula"
-                    
-#We check if the compound is combined with oxygen, hydrogen, if it's a salt or a combination of two no metals
-
-    partial_formula_1 = abbrev_1
-    partial_formula_2 = abbrev_2
-    
-    combined_with_oxigen = False
-    combined_with_hydrogen = False
-    metal_with_no_metal = False #(Salt)
-    combination_of_two_no_metals = False
-    
-    if partial_formula_2 == "O":
-        combined_with_oxigen = True
-        
-    elif partial_formula_2 == "H":
-        combined_with_hydrogen = True
-        
-    elif partial_formula_1 in metals and partial_formula_2 in no_metals:
-        metal_with_no_metal = True
-        
-    elif partial_formula_1 in no_metals and partial_formula_2 in no_metals:
-        combination_of_two_no_metals = True
-        
-    else: 
-        return "Something happened with the classification."
-    
-    
-    if combined_with_oxigen:
-        is_an_oxide = True
-        oxidation_number_O = -2
-        
-        is_a_peroxide = False
-    
-    element_1 = get_element_object(partial_formula_1) 
-    type_of_element_1 = element_1.type
-    
-    
-    if partial_formula_2 == "O" and atoms_e2 == 2 and type_of_element_1 == "Alkaline metals" or type_of_element_1 == "Alkaline earth metals":
-        is_a_peroxide = True
-        is_an_oxide = False
-    elif partial_formula_2 == "O" and atoms_e2 == 2 and element_1 == H:
-        is_a_peroxide = True
-        is_an_oxide = False
-        return "Peroxide (Hydrogen peroxide)"
-
-    
-    if is_a_peroxide: 
-        oxidation_number_O = -1
-    
-        
-    if combined_with_oxigen:
-        general_oxidation_number_acts_O = atoms_e2 * oxidation_number_O 
-        
-        general_oxidation_number_acts_e1 = abs(general_oxidation_number_acts_O)        
-        e_1 = get_element_object(partial_formula_1)
-        
-        return e_1
-    
-        if general_oxidation_number_acts_e1 in on.e_1:
-            oxidation_number_e_1 = general_oxidation_number_acts_e1
-        elif general_oxidation_number_acts_e1 / atoms_e1 % 0:
-            oxidation_number_e_1 = int(general_oxidation_number_acts_e1 / atoms_e1 )
-        else: 
-            return "Something is wrong with the oxidation numbers"
-        
-    part2_name = name_formula_simple(partial_formula_1)
-    
-    part1_name = name_formula_simple(partial_formula_2, is_anion=True)
-
-    name = part1_name + "de" + part2_name.capitalize()
     return name
+
+
+
 
 
 
