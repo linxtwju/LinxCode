@@ -686,9 +686,9 @@ def name_formula_simple (formula, is_anion = False, is_cation = False, return_wi
         else:
              element_name = element_name + suffix
 
-    name = prefix + element_name + charge_ 
+    name = prefix + element_name.lower() + charge_ 
 
-    return name
+    return name.capitalize()
 
 def main():
     formula = input("What formula you want to name?\nPlease write the number after the name of the element,  if there are more than one atom(e.g. N2), and if it has charge between parenthesis(e.g. Fe(3+)). If it has both conditions write it together(e.g. Hg2(2+)):\n")
