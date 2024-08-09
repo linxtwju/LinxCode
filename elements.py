@@ -690,7 +690,25 @@ def name_formula_simple (formula, is_anion = False, is_cation = False, return_wi
 
     return name
 
+def main():
+    formula = input("What formula you want to name?\nPlease write the number after the name of the element,  if there are more than one atom(e.g. N2), and if it has charge between parenthesis(e.g. Fe(3+)). If it has both conditions write it together(e.g. Hg2(2+)):\n")
 
+    election = input("What type of name you want to know? \n 1. Name with prefixes. \n 2. Name with oxidation number. \n 3. Name with number of charge. \n 4. All of them. \n")
+    if election is not int or election < 1 or election > 4:
+        election = input("Please introduce a number between 1 and 4")
+    
+    if election == 1:
+        print(f"The name with prefixes of {formula} is:" )
+        print(prefixes_name(formula))
+    elif election == 2:
+        print(f"The name with oxidation number of {formula} is:" )
+        print(oxidation_name(formula))
+    elif election == 3:
+        print(f"The name with charge number of {formula} is:" )
+        print(charge_name(formula))
+    elif election == 4: 
+        print("Formula              Prefixes                Oxidation number                Charge number")
+        print(f"{formula}", prefixes_name(formula), oxidation_name(formula), charge_name(formula))
 
 
 
