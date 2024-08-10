@@ -902,40 +902,35 @@ def name_formula (formula):
         #names_of_elements.append(element_name)
 
 
-        pass
-    
+        
     if compound_is == "tertiary" or compound_is == "quaternary":
+        name_molecule = ""
 
+        maybe_is_hydroxide = False
         is_hydroxide = False
+        
         is_oxoacid = False
         is_oxosal = False
         is_ion_heteropolyatomic = False
 
-        for element in atoms_per_formula:
-            name = 
-
-
         if dictionary_inside(atoms_per_formula):
-            pass
-
-        if len(atoms_per_formula) == 2:
-            
-
             part_molecule = dictionary_inside(atoms_per_formula)
+            name_molecule = prefix[atoms_per_formula[part_molecule]] + name_formula(part_molecule)
 
-            prefix_mol = prefix[atoms_per_formula[part_molecule]]
+        #OH Oxigen acts -2, hydrogen acts +1, the group hydroxide acts -1 as a whole
+        for element in atoms_per_formula:
+            if element == "O":
+                maybe_is_hydroxide = True
 
-            name_mol = name_formula(part_molecule)
-            
+            elif maybe_is_hydroxide and element == "H":
+                is_hydroxide = True
+                name += "hydroxide"             
 
+            elif get_element_object(element) in elements_list:
+                name += prefixes[atoms_per_formula[element]] + element
 
-            pass
-        
-
-
-        
-        pass
-
+            else:
+                name += name_molecule
 
     return name.capitalize()
 
@@ -943,8 +938,7 @@ def name_formula (formula):
 def oxidation_name(formula):
     pass
 
-# def charge_name(formula):
-#     pass
+
 
 def main():
     formula = input("What formula you want to name?\nPlease write the number after the name of the element,  if there are more than one atom(e.g. N2), and if it has charge between parenthesis(e.g. Fe(3+)). If it has both conditions write it together(e.g. Hg2(2+)):\n")
@@ -963,8 +957,8 @@ def main():
         print(f"The name with charge number of {formula} is:" )
         print(charge_name(formula))
     elif election == 4: 
-        print("Formula      Prefixes        Oxidation number        Charge number")
-        print(f"{formula}", prefixes_name(formula), oxidation_name(formula), charge_name(formula))
+        print("Formula      Prefixes                  Oxidation number")
+        print(f"{formula}", prefixes_name(formula), oxidation_name(formula))
 
 
 
