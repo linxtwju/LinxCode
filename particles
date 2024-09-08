@@ -1,0 +1,35 @@
+#Data and constants
+proton_mass = 1.67262192369e-27 #kg
+neutron_mass = 	1.67492749804e-27 #kg
+electron_mass = 9.1093837015e-31 #kg
+
+proton_charge = 1.602e-19#C
+neutron_charge = 0
+electron_charge = -1.602-19#C
+
+Planck_constant = 6.626e-34 #J·s
+G = 6.6e11 # N*m2/kg2
+speed_of_light = 299792458 #m/s
+Coulomb_constant = 8.99e9
+n_Avogadro = 6.022e23#particles/molecules in 1 mole (in 22.1l in normal conditions, gas)
+
+#Time in seconds
+s_minute = 60
+s_hour = s_minute * 60
+s_day = s_hour * 24
+s_year = 365.25 * s_day
+
+electron_mass * 1836
+
+alpha_particle_mass = 6.6446573357e-27 #kg
+decay_beta_restant_mass = neutron_mass - (proton_mass + electron_mass)
+energy_released = decay_beta_restant_mass*speed_of_light**2
+#Part of it goes to antineutrino, and the other part goes as kinetic energy
+#Take in consideration that the neutron pass to not having charge at all to be a proton with charge. 
+
+M = 1e6
+eV = 1.602e-19 #J
+print(0.511 * M*eV / (speed_of_light**2))
+print((2.16+4.7*2) * M*eV / (speed_of_light**2))
+
+
