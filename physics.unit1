@@ -1,0 +1,174 @@
+import math
+g = 9.81 #m/s^2 #gravity acceleration
+
+#Conversions
+ω_to_T = lambda angular_frequency: 2 * math.pi / angular_frequency
+f_to_T = lambda frequency: 1/ frequency
+
+T_to_ω = lambda period: 2 * math.pi / period
+T_to_f = lambda period: 1/ period
+
+#Cycles per second is frequency
+def period_to_cycles_per_second(period):
+    return 1 / period
+
+#Period is the time it takes to complete one cycle
+def cycles_per_second_to_period(cycles_per_second):
+    return 1 / cycles_per_second
+
+#Angular frequency is the same as omega and angular speed
+def calculate_angular_frequency(spring_constant, mass):
+    return math.sqrt(spring_constant / mass)
+
+#Angular frequency of a pendulum
+def angular_frequency_l_g(length, g):
+    return math.sqrt(g/length)
+
+def calculate_period_from_angular_frequency(angular_frequency):
+    return 2 * math.pi / angular_frequency
+
+def max_speed_A_ω(amplitude, angular_frequency):
+    return amplitude * angular_frequency
+
+def max_speed_A_f(amplitude, frequency):
+    return amplitude * 2 * math.pi * frequency
+
+def max_acceleration_A_ω(amplitude, angular_frequency):
+    return amplitude * angular_frequency**2
+
+def max_acceleration_A_f(amplitude, frequency):
+    return amplitude * (2 * math.pi * frequency)**2
+
+def calculate_displacement_at_time(amplitude, angular_frequency, time):
+    return amplitude * math.cos(angular_frequency * time)
+
+def calculate_speed_at_time(amplitude, angular_frequency, time):
+    return -amplitude * angular_frequency * math.sin(angular_frequency * time)
+
+def calculate_spring_constant_gravity(mass, g, displacement):
+    return mass * g / displacement
+
+def calculate_spring_constant(mass, angular_frequency):
+    return mass * angular_frequency**2
+
+def calculate_mass(spring_constant, g, displacement):
+    return spring_constant * displacement / g
+
+def calculate_frequency(angular_frequency):
+    return angular_frequency / (2 * math.pi)
+
+def calculate_acceleration_by_displacement(angular_frequency, displacement):
+    return -angular_frequency**2 * displacement
+
+def mechanical_energy_k_A(spring_constant, amplitude):
+    return 0.5 * spring_constant * amplitude**2
+
+def mechanical_energy_m_ω_A(mass, angular_frequency, amplitude):
+    return 0.5 * mass * angular_frequency**2 * amplitude**2
+
+
+def exercise_1():
+    period_a = 0.5
+    period_b = 0.25
+    period_c = period_a * 4
+
+    print(period_to_cycles_per_second(period_a))
+    print(period_to_cycles_per_second(period_b))
+    print(period_to_cycles_per_second(period_c))
+
+def exercise_2():
+    cycles_per_second_a = 2
+    cycles_per_second_b = 4
+    cycles_per_second_c = 50
+
+    print(cycles_per_second_to_period(cycles_per_second_a))
+    print(cycles_per_second_to_period(cycles_per_second_b))
+    print(cycles_per_second_to_period(cycles_per_second_c))
+
+def exercise_ex1():
+    mass = 0.1#kg
+    spring_constant = 50#N/m
+    amplitude = 0.03     #m
+    time = 0.05 #s
+    
+    angular_frequency = calculate_angular_frequency(spring_constant, mass)
+    T = calculate_period_from_angular_frequency(angular_frequency)
+    v_max = max_speed_A_ω(amplitude, angular_frequency) #m/s
+    speed = calculate_speed_at_time(amplitude, angular_frequency, time)
+    displacement = calculate_displacement_at_time(amplitude, angular_frequency, time)
+
+    print(f"Angular frequency: {angular_frequency} rad/s")
+    print(f"Period: {T} s")
+    print(f"Max speed:(+/-){v_max} m/s")
+    print(f"Displacement (cos): {displacement} m") #horizontal
+    print(f"Speed: {speed} m/s")
+
+def exercise_4():
+    mass_woman = 50#kg
+    #spring_constant = ?
+    amplitude = 0.05#m
+        
+    spring_constant = calculate_spring_constant_gravity(mass_woman, g, amplitude)
+    print(f"Spring constant trampoline: {spring_constant} N/m")
+    amplitude = 0.12
+    mass_man = calculate_mass(spring_constant, g, amplitude)
+    print(f"Mass man: {mass_man} kg")
+
+def exercise_5():
+    amplitude = 0.3#m
+    angular_frequency = 5#rad/s
+    mass = 0.4#kg
+    #v_max = ?
+    #f = ?
+    
+    v_max = max_speed_A_ω(amplitude, angular_frequency)
+    f = calculate_frequency(angular_frequency)
+
+    print(f"Max speed: {v_max} m/s")
+    print(f"Frequency: {f} Hz")
+
+    spring_constant = calculate_spring_constant(mass, angular_frequency)
+    print(f"Spring constant: {spring_constant} N/m")
+
+    displacement = 0.16
+    a = calculate_acceleration_by_displacement(angular_frequency, displacement)
+    print(f"Acceleration: {a} m/s^2")
+
+def exercise_6():
+    frequency = 50000#Hz    
+    amplitude = 2e-6#m
+
+    v_max = max_speed_A_f(amplitude, frequency)
+    a_max = max_acceleration_A_f(amplitude, frequency)
+
+    print(f"Max speed: {v_max} m/s")
+    print(f"Max acceleration: {a_max} m/s^2")
+    print("The device is more effective at high frequencies, because the max speed is high")
+
+def exercise_7():
+    length = 1#m
+    g = 9.81#m/s^2
+    #period = ?
+
+    angular_frequency = angular_frequency_l_g(length, g)
+    T = ω_to_T(angular_frequency)    
+    print(f"Period: {T} s")
+
+    frequency = 1#Hz
+    T = f_to_T(frequency)
+    new_angular_frequency = T_to_ω(T)
+    new_length = g / (new_angular_frequency)**2
+    print(f"Length if frequency is 1 Hz: {new_length} m")
+
+def exercise_8():
+    spring_constant = 50#N/m
+    amplitude = 0.03     #m
+    
+    mechanical_energy = mechanical_energy_k_A(spring_constant, amplitude)
+    print(f"Mechanical energy solved example 1: {mechanical_energy} J")
+
+    amplitude = 0.3#m
+    angular_frequency = 5#rad/s
+    mass = 0.4#kg
+    mechanical_energy = mechanical_energy_m_ω_A(mass, angular_frequency, amplitude)
+    print(f"Mechanical energy exercise 5: {mechanical_energy} J")
