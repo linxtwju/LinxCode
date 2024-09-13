@@ -8,10 +8,15 @@ f_to_T = lambda frequency: 1/ frequency
 T_to_ω = lambda period: 2 * math.pi / period
 T_to_f = lambda period: 1/ period
 
+ω_to_f = lambda angular_frequency: angular_frequency / (2 * math.pi)
+f_to_ω = lambda frequency: frequency * (2 * math.pi)
+
+k_to_λ = lambda k: 2 * math.pi / k
+λ_to_k = lambda λ: 2 * math.pi / λ
+
 #Cycles per second is frequency
 def period_to_cycles_per_second(period):
     return 1 / period
-
 #Period is the time it takes to complete one cycle
 def cycles_per_second_to_period(cycles_per_second):
     return 1 / cycles_per_second
@@ -21,7 +26,7 @@ def calculate_angular_frequency(spring_constant, mass):
     return math.sqrt(spring_constant / mass)
 
 #Angular frequency of a pendulum
-def angular_frequency_l_g(length, g):
+def angular_frequency_l_g_pendulum(length, g):
     return math.sqrt(g/length)
 
 def calculate_period_from_angular_frequency(angular_frequency):
@@ -66,6 +71,10 @@ def mechanical_energy_k_A(spring_constant, amplitude):
 def mechanical_energy_m_ω_A(mass, angular_frequency, amplitude):
     return 0.5 * mass * angular_frequency**2 * amplitude**2
 
+def wavelength_v_f(v, f):
+    return v / f
+
+##
 
 def exercise_1():
     period_a = 0.5
@@ -150,7 +159,7 @@ def exercise_7():
     g = 9.81#m/s^2
     #period = ?
 
-    angular_frequency = angular_frequency_l_g(length, g)
+    angular_frequency = angular_frequency_l_g_pendulum(length, g)
     T = ω_to_T(angular_frequency)    
     print(f"Period: {T} s")
 
@@ -172,3 +181,218 @@ def exercise_8():
     mass = 0.4#kg
     mechanical_energy = mechanical_energy_m_ω_A(mass, angular_frequency, amplitude)
     print(f"Mechanical energy exercise 5: {mechanical_energy} J")
+
+def exercise_9(): 
+    spring_constant = 1e2#N/m
+    amplitude = 0.15#m
+    object_mass1 = 0.002#kg
+    object_mass2 = object_mass1 * 2
+    #Ep = ?
+    #V_object = ?
+
+    to_demostrate = "Exit velocity is proportional to the initial compression of the spring"
+
+    #Initial mechanical energy is equivalent to the initial potential energy of the spring
+    mechanical_energy_initial = mechanical_energy_k_A(spring_constant, amplitude)
+    print(f"Potential energy initial: {mechanical_energy_initial} J")
+
+    
+    v_object1 = math.sqrt(2 * mechanical_energy_initial / object_mass1)
+    v_object2 = math.sqrt(2 * mechanical_energy_initial / object_mass2)
+
+    print(f"Velocity object 1: {v_object1} m/s")
+    print(f"Velocity object 2: {v_object2} m/s")
+    print(f"The exit velocity is proportional to the initial compression of the spring: {v_object2/v_object1}")
+
+#Refer
+def exercise_10():
+    #complex pendulum
+    length_spring = 0.4#m
+    length_rope = 0.2#m
+    amplitude_spring = 0.2#m
+    #frequency_spring = ?
+    #frequency_pendulum = ?
+    #Relation between frequency_spring and frequency_pendulum = ?
+    #Relation between frecuencies and amplitudes = ?
+
+    angular_frequency_spring = angular_frequency_l_g_pendulum(length_spring, g)
+    frequency_spring = ω_to_f(angular_frequency_spring)
+    print(f"Frequency spring: {frequency_spring} Hz")
+
+    angular_frequency_pendulum = angular_frequency_l_g_pendulum(length_rope, g)
+    frequency_pendulum = ω_to_f(angular_frequency_pendulum)
+    print(f"Frequency pendulum: {frequency_pendulum} Hz")
+
+    print(f"Relation between frequency_spring and frequency_pendulum: {frequency_spring/frequency_pendulum}")
+
+def exercise_17():
+    min_frequency = 20#Hz
+    max_frequency = 20000#Hz
+    #v_sound = ?
+
+    v_sound = 343#m/s
+    λ_min = wavelength_v_f(v_sound / max_frequency)
+    λ_max = wavelength_v_f(v_sound / min_frequency)
+
+    print(f"Wavelength min: {λ_min} m")
+    print(f"Wavelength max: {λ_max} m")
+  
+def exercise_18():
+    v_sound = 331#m/s
+    f = 440#Hz
+    #λ = ?
+
+    λ = wavelength_v_f(v_sound, f)
+    print(f"Wavelength: {λ} m")
+
+def exercise_20():
+    v_sound_air = 340#m/s
+    v_sound_water = 1440#m/s
+
+    f_bat = 120000#Hz
+    f_dolphin = 200000#Hz
+
+    λ_bat_air = wavelength_v_f(v_sound_air, f_bat)
+    λ_dolphin_air = wavelength_v_f(v_sound_water, f_dolphin)
+
+    print(f"Wavelength bat in air: {λ_bat_air} m")
+    print(f"Wavelength dolphin in air: {λ_dolphin_air} m")
+
+    print(f"The wavelength of the dolphin is longer than the wavelength of the bat because the speed of sound in water is greater than the speed of sound in air.")
+
+def exercise_21():
+    def wave_equation_P(x, t):
+        #yP(x, t) = A * sin(ω * t - kx)
+        return 0.75 * math.sin(math.pi/2 * (340*t - x))
+    
+    #Amplitude = ?
+    #Wavelength = ?
+    #Frequency = ?
+    #Speed wave = ?
+
+    amplitude = 0.75#m
+
+    ω = math.pi/2 *340#rad/s
+    period = ω_to_T(ω)#2π/ω
+    frequency = ω_to_f(ω) #ω/2π
+
+    k = 1 * math.pi/2 
+    #k = 2π/λ
+    #λ = 2π/k
+    wavelength1 = 2 * math.pi / k
+    wavelength2 = k_to_λ(k)
+    if wavelength1 == wavelength2:
+        wavelength = wavelength1
+
+    speed_wave1 = wavelength/period
+    speed_wave2 = wavelength * frequency
+    if speed_wave1 == speed_wave2:
+        speed_wave = speed_wave1
+    
+
+
+
+    print(f"Amplitude: {amplitude} m")
+    print(f"Wavelength: {wavelength} m")
+    print(f"Frequency: {frequency} Hz")
+    print(f"Speed wave: {speed_wave} m/s")
+
+def exercise_22():
+    #Amplitude = ?
+    #Frequency = ?
+    #Speed wave = ?
+    #Wavelength = ?
+    #Period = ?
+
+    def wave_equation_y(x, t):
+        #yP(x, t) = A * sin(ω * t - kx) 
+        return 3 * math.sin (5 * math.pi * (t - 0.05*x))
+    
+    ω = 5 * math.pi
+    k = 0.05 * 5* math.pi
+    A = 3
+
+    amplitude = A
+    period = ω_to_T(ω)
+    frequency = ω_to_f(ω)
+    speed_wave = ω / k
+    wavelength = period * speed_wave
+    
+    print(f"Amplitude: {amplitude} m")
+    print(f"Frequency: {frequency} Hz")
+    print(f"Speed wave: {speed_wave} m/s")
+    print(f"Wavelength: {wavelength} m")
+    print(f"Period: {period} s")
+
+def exercise_23():
+    amplitude = 0.03#m
+    frequency = 100/ math.pi#Hz
+    speed_wave = 1#m/s
+    #Wave moves to the right
+    
+    #Equation of the wave if moves to the left ?
+
+    ω = f_to_ω(frequency)
+    #yP(x, t) = A * sin(ω * t - kx) 
+    k = ω / speed_wave
+
+    print(f"Equation of the wave if moves to the right: y = {amplitude} * sin({ω} * t + {k} * x)")
+
+def exercise_24():
+    #Amplitude = ?
+    #Frequency = ?
+    #Speed wave = ?
+    #Wavelength = ?
+    #Period = ?
+
+    def wave_equation_y(x, t):
+        return 2 * math.sin(2 * math.pi * (t/0.5 - x/30))
+
+    ω = 2 * math.pi/0.5
+    k = 2 * math.pi/30
+    A = 2
+
+    amplitude = A
+    period = ω_to_T(ω)
+    frequency = ω_to_f(ω)
+    speed_wave = ω / k
+    wavelength = period * speed_wave
+
+    print(f"Amplitude: {amplitude} m")
+    print(f"Frequency: {frequency} Hz")
+    print(f"Speed wave: {speed_wave} m/s")
+    print(f"Wavelength: {wavelength} m")
+    print(f"Period: {period} s")
+
+#Refer
+def exercise_25():
+    
+    #Frequency = ?
+    amplitude = 8
+    x = 1.25#m
+    t = 5#s
+    speed_wave = 500#m/s
+    wavelength = 2#m
+    
+def exercise_26():
+    #Frequency = ?
+    #Speed wave = ?
+    #Wavelength = ?
+
+    def wave_equation_y(x, t):
+        return 5 * math.sin(math.pi/2 * (3*t - 0.01*x))   
+    
+    ω = 3 * math.pi/2
+    k = 0.01 * math.pi/2
+    A = 5
+
+    amplitude = A
+    period = ω_to_T(ω)
+    frequency = ω_to_f(ω)
+    speed_wave = ω / k
+    wavelength = period * speed_wave
+
+    print(f"Frequency: {frequency} Hz")
+    print(f"Speed wave: {speed_wave} m/s")
+    print(f"Wavelength: {wavelength} m")
+
